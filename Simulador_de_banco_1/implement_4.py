@@ -1,10 +1,21 @@
 # Non-OOP Bank
 # Version 4
 # Any number of accounts - with lists
+
+# Funciones: 
+# - nueva_cuenta( )
+# - show( )
+# - getsaldo( )
+# - deposito( )
+# - retiro( )
+
+# Definimos las listas que contendran los datos
 lista_nombres_cuentas = [] 
 lista_saldos_cuentas = [] 
 lista_contrasenias_cuentas = []
+
 def nueva_cuenta(nombre, saldo, contrasenia):
+  #Se llaman  a las variables globales   
   global lista_nombres_cuentas, lista_saldos_cuentas, lista_contrasenias_cuentas
   lista_nombres_cuentas.append(nombre) 
   lista_saldos_cuentas.append(saldo) 
@@ -24,6 +35,31 @@ def obtener_saldo(numero_de_cuenta, contrasenia):
     print('Contraseña incorrecta')
     return None
   return lista_saldos_cuentas[numero_de_cuenta]
+
+def deposito(numero_de_cuenta, deposito, contrasenia):
+    global lista_saldos_cuentas, lista_contrasenias_cuentas
+    saldoActual = lista_saldos_cuentas[numero_de_cuenta]
+
+    if( contrasenia != lista_contrasenias_cuentas[numero_de_cuenta]):
+      print('Contraseña incorrecta')
+      return None
+    nuevo_saldo = saldoActual + deposito
+    lista_saldos_cuentas[numero_de_cuenta] = nuevo_saldo
+    print(f"Tu saldo es: {nuevo_saldo}")
+
+def retiro(numero_de_cuenta, deposito, contrasenia):
+    global lista_saldos_cuentas, lista_contrasenias_cuentas
+    saldoActual = lista_saldos_cuentas[numero_de_cuenta]
+
+    if( contrasenia != lista_contrasenias_cuentas[numero_de_cuenta]):
+      print('Contraseña incorrecta')
+      return None
+    nuevo_saldo = saldoActual - deposito
+    if( nuevo_saldo < 0):
+      print("No tienes suficientes fondos para realizar esta accion")
+      return None
+    lista_saldos_cuentas[numero_de_cuenta] = nuevo_saldo
+    print(f"Tu saldo es: {nuevo_saldo}")
 
 #  --- Nos saltamos las demás funciones ---
 # Creamos dos cuentas de prueba
@@ -52,6 +88,27 @@ while True:
     saldo = obtener_saldo(user_numero_de_cuenta, user_contrasenia)
     if saldo is not None:
       print('Your saldo is:', saldo)
+  if action == 'd':
+    number_account = int(input("¿En qué cuenta quieres hacer tu deposito?"))
+    number_deposito = int(input("¿Cuánto quieres depositar?"))
+    if(number_deposito < 0):
+      print('Uitliza numeros positivos')
+      break
+    contrasenia = input("Escribe la contraseña de la cuenta: ")
+    deposito(number_account,number_deposito, contrasenia)
+  if action == 'w':
+     number_account = int(input("¿En qué cuenta quieres hacer tu retiro?"))
+     number_retirar = int(input("¿Cuánto quieres retirar?"))
+     if(number_deposito < 0):
+      print('Uitliza numeros positivos')
+      break
+     contrasenia = input("Escribe la contraseña de la cuenta: ")
+     retiro(number_account,number_retirar, contrasenia)
+  if action == 's':
+    user_numero_de_cuenta = int(input('Por favor ingresa tu número de cuenta'))
+    show(user_numero_de_cuenta)
+  if action == 'q':
+     break
 #   --- Nos saltamos parte del código principal ---
    
 print('Bye')
